@@ -318,8 +318,9 @@ export class JuliaKernel {
             this.outputChannel.appendLine(`Now strating the kernel process from the extension with '${this.juliaExecutable.file}', '${args}'.`)
 
             this._kernelProcess = spawn(
-                this.juliaExecutable.file,
+                "xvfb-run -s '-screen 0 1024x768x24'",
                 [
+                    this.juliaExecutable.file,
                     ...this.juliaExecutable.args,
                     ...args,
                     path.join(this.extensionPath, 'scripts', 'notebook', 'notebook.jl'),
@@ -328,7 +329,8 @@ export class JuliaKernel {
                 ],
                 {
                     env,
-                    cwd: cwdPath
+                    cwd: cwdPath,
+                    DISPLAY: ':0',
                 }
             )
 
